@@ -10,7 +10,7 @@ A simple discord server n$ker (slow but it works)
 # Requirements
   - You need Python (Minimum Version: **3.12**)
   - Type: pip install -r requirements.txt
-    or
+  - or
   - Type: chmod 777 download_requirements.sh
   - Type: ./download_requirements.sh
 # Edit
