@@ -27,7 +27,7 @@ A simple discord server n$ker (slow but it works)
   - Unzip the file
 # Requirements
   - You need Python (Minimum Version: **3.12**)
-  - Double-click download_requirements.bat or dowünload_requirements.sh
+  - Double-click download_requirements.bat or download_requirements.sh
   - Or
   - Goto cmd/powershell and type: pip install -r requirements.txt
 # Edit
