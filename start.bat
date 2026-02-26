@@ -1,3 +1,4 @@
 @echo off
-title small nuker
-python3 main.py
+title Simple N$ker
+python main.py
+pause>nul
